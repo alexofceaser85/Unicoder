@@ -108,5 +108,39 @@ public class CodePoint {
 			return null;
 		}
 	}
+	
+	/**
+	 * Converts the code point to a UTF-16 representation
+	 * 
+	 * @precondition none
+	 * @postcondition none
+	 * 
+	 * @return The UTF-16 version of the code point
+	 */
+	
+	public String toUTF16() {
+		int parsedInteger = Integer.parseUnsignedInt(this.codePoint, 16);
+		
+		if (parsedInteger <= 55295 || (parsedInteger >= 57344 && parsedInteger <= 65535)) {
+			return String.format("%04X", parsedInteger);
+		} else if (parsedInteger >= 65536 && parsedInteger <= 1114111) {
 
+			parsedInteger = parsedInteger - 0x10000;
+			
+			int upperBits = 0b00000000000011111111110000000000 & parsedInteger;
+			int lowerBits = 0b00000000000000000000001111111111 & parsedInteger;
+			
+			upperBits = upperBits >>> 10;
+
+			upperBits = 0b00000000000000001101100000000000 | upperBits;
+			lowerBits = 0b00000000000000001101110000000000 | lowerBits;
+			
+			upperBits = upperBits << 16;
+
+			int result = upperBits | lowerBits;
+			return String.format("%08X", result);
+		} else {
+			return null;
+		}
+	}
 }
