@@ -143,4 +143,18 @@ public class CodePoint {
 			return null;
 		}
 	}
+	
+	/**
+	 * Converts the code point to a UTF-32 representation
+	 * 
+	 * @precondition none
+	 * @postcondition none
+	 * 
+	 * @return The UTF-32 version of the code point
+	 */
+	
+	public String toUTF32() {
+		int parsedInteger = Integer.parseUnsignedInt(this.codePoint, 16);
+		return String.format("%08X", parsedInteger);
+	}
 }
