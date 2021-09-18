@@ -9,6 +9,20 @@ import edu.westga.cs3110.unicoder.model.CodePoint;
 class TestToUTF8 {
 
 	@Test
+	void shouldEncodeForMinValue() {
+		String maxValue = String.format("%x", Integer.MIN_VALUE);
+		CodePoint codePoint = new CodePoint(maxValue);
+		assertEquals("80000000", codePoint.toUTF8());
+	}
+	
+	@Test
+	void shouldEncodeForMaxValue() {
+		String maxValue = String.format("%x", Integer.MAX_VALUE);
+		CodePoint codePoint = new CodePoint(maxValue);
+		assertEquals(null, codePoint.toUTF8());
+	}
+	
+	@Test
 	void shouldEncodeForLowestSingleByteUTFEight() {
 		CodePoint codePoint = new CodePoint("0000");
 		assertEquals("00", codePoint.toUTF8());

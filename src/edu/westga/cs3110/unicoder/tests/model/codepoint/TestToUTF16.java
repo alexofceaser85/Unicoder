@@ -9,6 +9,20 @@ import edu.westga.cs3110.unicoder.model.CodePoint;
 class TestToUTF16 {
 
 	@Test
+	void shouldEncodeForMinValue() {
+		String maxValue = String.format("%x", Integer.MIN_VALUE);
+		CodePoint codePoint = new CodePoint(maxValue);
+		assertEquals("80000000", codePoint.toUTF16());
+	}
+	
+	@Test
+	void shouldEncodeForMaxValue() {
+		String maxValue = String.format("%x", Integer.MAX_VALUE);
+		CodePoint codePoint = new CodePoint(maxValue);
+		assertEquals(null, codePoint.toUTF16());
+	}
+	
+	@Test
 	void shouldEncodeForLowestTwoByteUTF16InFirstGroup() {
 		CodePoint codePoint = new CodePoint("0000");
 		assertEquals("0000", codePoint.toUTF16());
