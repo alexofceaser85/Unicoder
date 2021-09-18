@@ -46,5 +46,67 @@ public class CodePoint {
 	public String getCodePoint() {
 		return this.codePoint;
 	}
+	
+	/**
+	 * Converts the code point to a UTF-8 representation
+	 * 
+	 * @precondition none
+	 * @postcondition none
+	 * 
+	 * @return The UTF-8 version of the code point
+	 */
+	public String toUTF8() {
+		int parsedInteger = Integer.parseUnsignedInt(this.codePoint, 16);
+		
+		if (parsedInteger <= 127) {
+			return String.format("%02X", parsedInteger);
+		} else if (parsedInteger <= 2047) {
+			int firstByte = parsedInteger & 0b0000011111000000;
+			int secondByte = parsedInteger & 0b0000000000111111;
+			
+			firstByte = 0b0011000000000000 | firstByte;
+			secondByte = 0b0000000010000000 | secondByte;
+			
+			firstByte = firstByte << 2;
+			
+			int result = firstByte | secondByte;
+			return String.format("%04X", result);
+		} else if (parsedInteger <= 65535) {
+			int firstByte = parsedInteger  & 0b000000001111000000000000;
+			int secondByte = parsedInteger & 0b000000000000111111000000;
+			int thirdByte = parsedInteger  & 0b000000000000000000111111;
+
+			firstByte =  0b000011100000000000000000 | firstByte;
+			secondByte = 0b000000000010000000000000 | secondByte;
+			thirdByte =  0b000000000000000010000000 | thirdByte;
+			
+			firstByte = firstByte << 4;
+			secondByte = secondByte << 2;
+			
+			int result = 0b000000000000000000000000;
+			result = result | firstByte | secondByte | thirdByte;
+			return String.format("%06X", result);
+		} else if (parsedInteger <= 1114111) {
+			int firstByte = parsedInteger  & 0b00000000000111000000000000000000;
+			int secondByte = parsedInteger & 0b00000000000000111111000000000000;
+			int thirdByte = parsedInteger  & 0b00000000000000000000111111000000;
+			int fourthByte = parsedInteger & 0b00000000000000000000000000111111;
+			
+			firstByte = 0b00000011110000000000000000000000 | firstByte;
+			secondByte = 0b00000000000010000000000000000000 | secondByte;
+			thirdByte = 0b00000000000000000010000000000000 | thirdByte;
+			fourthByte = 0b00000000000000000000000010000000 | fourthByte;
+			
+			firstByte = firstByte << 6;
+			secondByte = secondByte << 4;
+			thirdByte = thirdByte << 2;
+			
+			int result = 0b00000000000000000000000000000000;
+			result = result | firstByte | secondByte | thirdByte | fourthByte;
+			return String.format("%08X", result);
+		} else {
+			return null;
+		}
+	}
 
 }
