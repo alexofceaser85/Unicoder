@@ -4,117 +4,117 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import edu.westga.cs3110.unicoder.model.CodePoint;
+import edu.westga.cs3110.unicoder.model.Codepoint;
 
 class TestToUTF16 {
 
 	@Test
 	void shouldEncodeForMinValue() {
 		String maxValue = String.format("%x", Integer.MIN_VALUE);
-		CodePoint codePoint = new CodePoint(maxValue);
+		Codepoint codePoint = new Codepoint(maxValue);
 		assertEquals("80000000", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForMaxValue() {
 		String maxValue = String.format("%x", Integer.MAX_VALUE);
-		CodePoint codePoint = new CodePoint(maxValue);
+		Codepoint codePoint = new Codepoint(maxValue);
 		assertEquals(null, codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForLowestTwoByteUTF16InFirstGroup() {
-		CodePoint codePoint = new CodePoint("0000");
+		Codepoint codePoint = new Codepoint("0000");
 		assertEquals("0000", codePoint.toUTF16());
 	}
 
 	@Test
 	void shouldEncodeForHighestTwoByteUTF16InFirstGroup() {
-		CodePoint codePoint = new CodePoint("D7FF");
+		Codepoint codePoint = new Codepoint("D7FF");
 		assertEquals("D7FF", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForHighestTwoByteUTF16InSecondGroup() {
-		CodePoint codePoint = new CodePoint("FFFF");
+		Codepoint codePoint = new Codepoint("FFFF");
 		assertEquals("FFFF", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForLowestTwoByteUTF16InSecondGroup() {
-		CodePoint codePoint = new CodePoint("E000");
+		Codepoint codePoint = new Codepoint("E000");
 		assertEquals("E000", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForLowestTwoByteUTF16() {
-		CodePoint codePoint = new CodePoint("10000");
+		Codepoint codePoint = new Codepoint("10000");
 		assertEquals("D800DC00", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForMidpointTwpByteUTF16() {
-		CodePoint codePoint = new CodePoint("0183A5");
+		Codepoint codePoint = new Codepoint("0183A5");
 		assertEquals("D820DFA5", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForSecondMidpointTwoByteUTF16() {
-		CodePoint codePoint = new CodePoint("1682F");
+		Codepoint codePoint = new Codepoint("1682F");
 		assertEquals("D81ADC2F", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForHighestTwoByteUTF16() {
-		CodePoint codePoint = new CodePoint("10FFFF");
+		Codepoint codePoint = new Codepoint("10FFFF");
 		assertEquals("DBFFDFFF", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldNotEncodeForTwoByteOneHigherThanFirstGroup() {
-		CodePoint codePoint = new CodePoint("D800");
+		Codepoint codePoint = new Codepoint("D800");
 		assertEquals(null, codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldNotEncodeForTwoByteWellHigherThanFirstGroup() {
-		CodePoint codePoint = new CodePoint("DAC0");
+		Codepoint codePoint = new Codepoint("DAC0");
 		assertEquals(null, codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldNotEncodeForTwoByteOneLowerThanFirstGroup() {
-		CodePoint codePoint = new CodePoint("DFFF");
+		Codepoint codePoint = new Codepoint("DFFF");
 		assertEquals(null, codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForFourByteWellLowerThanFirstGroup() {
-		CodePoint codePoint = new CodePoint("DEA8");
+		Codepoint codePoint = new Codepoint("DEA8");
 		assertEquals(null, codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForFourByteOneHigherThanSecondGroup() {
-		CodePoint codePoint = new CodePoint("10000");
+		Codepoint codePoint = new Codepoint("10000");
 		assertEquals("D800DC00", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldEncodeForFourByteWellHigherThanSecondGroup() {
-		CodePoint codePoint = new CodePoint("15F90");
+		Codepoint codePoint = new Codepoint("15F90");
 		assertEquals("D817DF90", codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldNotEncodeForFourByteOneHigherThanSecondGroup() {
-		CodePoint codePoint = new CodePoint("110000");
+		Codepoint codePoint = new Codepoint("110000");
 		assertEquals(null, codePoint.toUTF16());
 	}
 	
 	@Test
 	void shouldNotEncodeForFourByteWellHigherThanSecondGroup() {
-		CodePoint codePoint = new CodePoint("204240");
+		Codepoint codePoint = new Codepoint("204240");
 		assertEquals(null, codePoint.toUTF16());
 	}
 }
